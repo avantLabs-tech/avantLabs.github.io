@@ -9,9 +9,9 @@
 
 <channel>
 	<title>Useful &#8211; AvantLabs</title>
-	<atom:link href="./index.html?simply_static_page=5095" rel="self" type="application/rss+xml" />
+	<atom:link href="./index.html?simply_static_page=5353" rel="self" type="application/rss+xml" />
 	<link>./../../../index.html</link>
-	<description>Premier Destination for Embedded Development</description>
+	<description>Premier Embedded Design Solutions</description>
 	<lastBuildDate>Tue, 18 Aug 2020 16:31:29 +0000</lastBuildDate>
 	<language>en-US</language>
 	<sy:updatePeriod>
@@ -32,7 +32,7 @@
 		<link>./../../../2020/08/18/elementum-curabitur-vitaenunc-sed-velit/index.html</link>
 					<comments>./../../../2020/08/18/elementum-curabitur-vitaenunc-sed-velit/index.html#respond</comments>
 		
-		<dc:creator><![CDATA[max12]]></dc:creator>
+		<dc:creator><![CDATA[Abdullah Bajwa]]></dc:creator>
 		<pubDate>Tue, 18 Aug 2020 16:31:29 +0000</pubDate>
 				<category><![CDATA[News]]></category>
 		<category><![CDATA[Useful]]></category>
