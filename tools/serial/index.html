@@ -90,7 +90,8 @@
         }
 
         sendBtn.addEventListener("click", async () => {
-          const data = document.getElementById("dataInput").value;
+          let data = document.getElementById("dataInput").value;
+          data += "\r\n";
           const encoder = new TextEncoder();
           if (!port || !port.writable) return;
           await writer.write(encoder.encode(data));
