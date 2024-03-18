@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Serial Port Communication</title>
+    <!-- Include Tailwind CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-gray-100 p-4">
+    <!-- Navbar -->
+    <nav class="bg-gray-200 p-4 mb-4">
+      <h1 class="text-2xl font-bold">Serial Port Communication</h1>
+    </nav>
+
+    <div class="grid grid-cols-2 gap-4">
+      <!-- Send Data Card -->
+      <div class="bg-white rounded p-6 shadow-md">
+        <h2 class="text-xl font-bold mb-4">Send Data</h2>
+        <div class="mb-4">
+          <input
+            type="text"
+            id="dataInput"
+            class="w-full border border-gray-300 rounded px-3 py-2"
+          />
+        </div>
+        <button
+          id="sendBtn"
+          class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Send
+        </button>
+        <!-- Connect Button -->
+        <button
+          id="connectBtn"
+          class="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Connect
+        </button>
+      </div>
+
+      <!-- Read Configs Card -->
+      <div class="bg-white rounded p-6 shadow-md">
+        <h2 class="text-xl font-bold mb-4">Read Configs</h2>
+        <button
+          id="readImeiBtn"
+          class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
+        >
+          Read IMEI
+        </button>
+        <button
+          id="readConfigsBtn"
+          class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Read Configs
+        </button>
+      </div>
+
+      <div class="bg-white rounded p-6 shadow-md flex flex-col">
+        <h2 class="text-xl font-bold mb-4">Received Data</h2>
+        <div class="mt-4 flex-grow">
+          <textarea
+            id="outputTextarea"
+            class="w-full h-full border border-gray-300 rounded px-3 py-2 resize-none"
+            readonly
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Set Configs Card -->
+      <div class="bg-white rounded p-6 shadow-md">
+        <h2 class="text-xl font-bold mb-4">Set Configs</h2>
+        <button
+          id="configModeBtn"
+          class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
+        >
+          Config Mode
+        </button>
+        <button
+          id="saveConfigsBtn"
+          class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
+        >
+          Save Configs
+        </button>
+        <div class="mb-4 flex items-center">
+          <label for="apnInput" class="block mb-1 mr-2 w-1/5">APN Name:</label>
+          <input
+            type="text"
+            id="apnInput"
+            class="flex-grow border border-gray-300 rounded px-3 py-2 mr-2"
+          />
+          <button
+            id="sendApnBtn"
+            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Send
+          </button>
+        </div>
+        <div class="mb-4 flex items-center">
+          <label for="ipInput" class="block mb-1 mr-2 w-1/5">IP Address:</label>
+          <input
+            type="text"
+            id="ipInput"
+            class="flex-grow border border-gray-300 rounded px-3 py-2 mr-2"
+          />
+          <button
+            id="sendIpBtn"
+            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Send
+          </button>
+        </div>
+        <div class="mb-4 flex items-center">
+          <label for="portInput" class="block mb-1 mr-2 w-1/5">Port:</label>
+          <input
+            type="number"
+            id="portInput"
+            class="flex-grow border border-gray-300 rounded px-3 py-2 mr-2"
+          />
+          <button
+            id="sendPortBtn"
+            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Send
+          </button>
+        </div>
+        <div class="mb-4 flex items-center">
+          <label for="updateRateInput" class="block mb-1 mr-2 w-1/5"
+            >Update Rate:</label
+          >
+          <input
+            type="number"
+            id="updateRateInput"
+            class="flex-grow border border-gray-300 rounded px-3 py-2 mr-2"
+          />
+          <button
+            id="sendUpdateRateBtn"
+            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Send
+          </button>
+        </div>
+        <div class="mb-4 flex items-center">
+          <label for="pidsInput" class="block mb-1 mr-2 w-1/5">PIDs:</label>
+          <input
+            type="text"
+            id="pidsInput"
+            class="flex-grow border border-gray-300 rounded px-3 py-2 mr-2"
+          />
+          <button
+            id="sendPidsBtn"
+            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Send
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Include JavaScript -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        let port;
+        let reader;
+        let writer;
+
+        const outputTextarea = document.getElementById("outputTextarea");
+        const sendBtn = document.getElementById("sendBtn");
+        const configModeBtn = document.getElementById("configModeBtn");
+        const saveConfigsBtn = document.getElementById("saveConfigsBtn");
+        const apnInput = document.getElementById("apnInput");
+        const sendApnBtn = document.getElementById("sendApnBtn");
+
+        const ipInput = document.getElementById("ipInput");
+        const sendIpBtn = document.getElementById("sendIpBtn");
+
+        const portInput = document.getElementById("portInput");
+        const sendPortBtn = document.getElementById("sendPortBtn");
+
+        const updateRateInput = document.getElementById("updateRateInput");
+        const sendUpdateRateBtn = document.getElementById("sendUpdateRateBtn");
+
+        const pidsInput = document.getElementById("pidsInput");
+        const sendPidsBtn = document.getElementById("sendPidsBtn");
+        const readImeiBtn = document.getElementById("readImeiBtn");
+        const readConfigsBtn = document.getElementById("readConfigsBtn");
+        const connectBtn = document.getElementById("connectBtn");
+
+        async function readLoop() {
+          let buffer = ""; // Buffer to accumulate incoming data
+          let messageCount = 0; // Count of received messages
+
+          try {
+            while (true) {
+              const { value, done } = await reader.read();
+
+              if (done) {
+                reader.releaseLock();
+                break;
+              }
+
+              const receivedText = new TextDecoder().decode(value);
+              buffer += receivedText;
+
+              while (buffer.includes("\r\r\n") || buffer.includes("\r\n")) {
+                if (buffer.includes("\r\r\n")) {
+                  console.log("ACK received");
+                  const index = buffer.indexOf("\r\r\n") + 3;
+                  buffer = buffer.slice(index);
+                } else if (buffer.includes("\r\n")) {
+                  console.log("Echoing message with additional \\r");
+                  const message = buffer.slice(0, buffer.indexOf("\r\n"));
+                  console.log("Before replacement:", message);
+
+                  echoToSerial(message);
+
+                  buffer = buffer.slice(buffer.indexOf("\r\n") + 2);
+                }
+              }
+
+              if (value) {
+                messageCount++;
+                if (messageCount === 5) {
+                  console.log("Buffer full, clearing...");
+                  buffer = "";
+                  messageCount = 0;
+                }
+              }
+            }
+          } catch (error) {
+            console.error("Error reading:", error);
+          }
+        }
+
+        async function writeToSerial(data) {
+          data += "\r\n";
+          const encoder = new TextEncoder();
+          if (!port || !port.writable) {
+            alert("Not Connected to serial Port");
+            return;
+          }
+          await writer.write(encoder.encode(data));
+        }
+        async function echoToSerial(data) {
+          data += "\r\r\n";
+          const encoder = new TextEncoder();
+          if (!port || !port.writable) {
+            alert("Not Connected to serial Port");
+            return;
+          }
+          await writer.write(encoder.encode(data));
+        }
+
+        connectBtn.addEventListener("click", async () => {
+          try {
+            port = await navigator.serial.requestPort();
+            await port.open({ baudRate: 115200 });
+
+            reader = port.readable.getReader();
+            writer = port.writable.getWriter();
+
+            readLoop();
+          } catch (error) {
+            console.error("Error connecting:", error);
+          }
+        });
+
+        sendBtn.addEventListener("click", async () => {
+          let data = document.getElementById("dataInput").value;
+          await writeToSerial(data);
+        });
+
+        configModeBtn.addEventListener("click", () => {
+          console.log("Config Mode Button Pressed");
+          writeToSerial("CONFIG");
+        });
+
+        saveConfigsBtn.addEventListener("click", () => {
+          console.log("Save Configs Button Pressed");
+          writeToSerial("SAV:SET");
+        });
+
+        sendApnBtn.addEventListener("click", () => {
+          const apnValue = apnInput.value;
+          console.log("APN:", apnValue);
+          writeToSerial(`APN:${apnValue}`);
+        });
+
+        sendIpBtn.addEventListener("click", () => {
+          const ipValue = ipInput.value;
+          console.log("IP Address:", ipValue);
+          writeToSerial(`IPS:${ipValue}`);
+        });
+
+        sendPortBtn.addEventListener("click", () => {
+          const portValue = portInput.value;
+          console.log("Port:", portValue);
+          writeToSerial(`PRT:${portValue}`);
+        });
+
+        sendUpdateRateBtn.addEventListener("click", () => {
+          const updateRateValue = updateRateInput.value;
+          console.log("Update Rate:", updateRateValue);
+          writeToSerial(`UPR:${updateRateValue}`);
+        });
+
+        sendPidsBtn.addEventListener("click", () => {
+          const pidsValue = pidsInput.value;
+          console.log("PIDs:", pidsValue);
+          writeToSerial(`PID:${pidsValue}`);
+        });
+        readImeiBtn.addEventListener("click", () => {
+          console.log("Read IMEI Button Pressed");
+          writeToSerial("IME:IMEI");
+        });
+
+        readConfigsBtn.addEventListener("click", () => {
+          console.log("Read Configs Button Pressed");
+          writeToSerial("RED:SET");
+        });
+      });
+    </script>
+  </body>
+</html>
