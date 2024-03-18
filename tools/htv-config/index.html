@@ -81,6 +81,12 @@
           Config Mode
         </button>
         <button
+          id="endConfigModeBtn"
+          class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
+        >
+          End Config
+        </button>
+        <button
           id="saveConfigsBtn"
           class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
         >
@@ -171,6 +177,7 @@
         const outputTextarea = document.getElementById("outputTextarea");
         const sendBtn = document.getElementById("sendBtn");
         const configModeBtn = document.getElementById("configModeBtn");
+        const endConfigModeBtn = document.getElementById("endConfigModeBtn");
         const saveConfigsBtn = document.getElementById("saveConfigsBtn");
         const apnInput = document.getElementById("apnInput");
         const sendApnBtn = document.getElementById("sendApnBtn");
@@ -274,10 +281,16 @@
           await writeToSerial(data);
         });
 
+        endConfigModeBtn.addEventListener("click", () => {
+          console.log("Config Mode Button Pressed");
+          writeToSerial("ENDCONFIG");
+        });
+
         configModeBtn.addEventListener("click", () => {
           console.log("Config Mode Button Pressed");
           writeToSerial("CONFIG");
         });
+        endConfigModeBtn;
 
         saveConfigsBtn.addEventListener("click", () => {
           console.log("Save Configs Button Pressed");
