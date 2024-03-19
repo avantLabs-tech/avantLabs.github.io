@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HTV TRACKER CONFIG</title>
+    <title>HTV TRACKER CONFIG v0.0.3</title>
     <!-- Include Tailwind CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
@@ -212,6 +212,7 @@
 
               const receivedText = new TextDecoder().decode(value);
               buffer += receivedText;
+              outputTextarea.value += rereceivedText+"\n";
 
               while (buffer.includes("\r\r\n") || buffer.includes("\r\n")) {
                 if (buffer.includes("\r\r\n")) {
