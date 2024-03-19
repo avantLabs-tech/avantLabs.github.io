@@ -212,7 +212,7 @@
 
               const receivedText = new TextDecoder().decode(value);
               buffer += receivedText;
-              outputTextarea.value += rereceivedText+"\n";
+              outputTextarea.value += receivedText+"\n";
 
               while (buffer.includes("\r\r\n") || buffer.includes("\r\n")) {
                 if (buffer.includes("\r\r\n")) {
