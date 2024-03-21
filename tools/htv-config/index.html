@@ -151,6 +151,25 @@
           </button>
         </div>
         <div class="mb-4 flex items-center">
+          <label for="canTypeInput" class="block mb-1 mr-2 w-1/5"
+            >CAN Type:</label
+          >
+          <select
+            id="canTypeInput"
+            class="flex-grow border border-gray-300 rounded px-3 py-2 mr-2"
+          >
+            <option value="STDID">Standard</option>
+            <option value="EXTID">Extended</option>
+          </select>
+
+          <button
+            id="sendCanTypeBtn"
+            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Send
+          </button>
+        </div>
+        <div class="mb-4 flex items-center">
           <label for="pidsInput" class="block mb-1 mr-2 w-1/5">PIDs:</label>
           <input
             type="text"
@@ -191,6 +210,9 @@
         const updateRateInput = document.getElementById("updateRateInput");
         const sendUpdateRateBtn = document.getElementById("sendUpdateRateBtn");
 
+        const canTypeInput = document.getElementById("canTypeInput");
+        const sendCanTypeBtn = document.getElementById("sendCanTypeBtn");
+
         const pidsInput = document.getElementById("pidsInput");
         const sendPidsBtn = document.getElementById("sendPidsBtn");
         const readImeiBtn = document.getElementById("readImeiBtn");
@@ -212,7 +234,7 @@
 
               const receivedText = new TextDecoder().decode(value);
               buffer += receivedText;
-              outputTextarea.value += receivedText+"\n";
+              outputTextarea.value += receivedText + "\n";
 
               while (buffer.includes("\r\r\n") || buffer.includes("\r\n")) {
                 if (buffer.includes("\r\r\n")) {
@@ -326,6 +348,12 @@
           const pidsValue = pidsInput.value;
           console.log("PIDs:", pidsValue);
           writeToSerial(`PID:${pidsValue}`);
+        });
+
+        sendCanTypeBtn.addEventListener("click", () => {
+          const canTypeValue = canTypeInput.value;
+          console.log("Can Type:", canTypeValue);
+          writeToSerial(`CAN:${canTypeValue}`);
         });
         readImeiBtn.addEventListener("click", () => {
           console.log("Read IMEI Button Pressed");
