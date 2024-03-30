@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Serial Port Communication</title>
+    <!-- Include Tailwind CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-gray-100 p-4">
+    <div class="max-w-md mx-auto bg-white rounded p-6 shadow-md">
+      <h1 class="text-2xl font-bold mb-4">Serial Port Communication</h1>
+
+      <div class="mb-4">
+        <label for="dataInput" class="block mb-1">Data to Send:</label>
+        <input
+          type="text"
+          id="dataInput"
+          class="w-full border border-gray-300 rounded px-3 py-2"
+        />
+      </div>
+
+      <button
+        id="sendBtn"
+        class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      >
+        Send
+      </button>
+
+      <div class="mt-4">
+        <label for="outputTextarea" class="block mb-1">Received Data:</label>
+        <textarea
+          id="outputTextarea"
+          class="w-full h-32 border border-gray-300 rounded px-3 py-2 resize-none"
+          readonly
+        ></textarea>
+      </div>
+
+      <button
+        id="connectBtn"
+        class="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      >
+        Connect
+      </button>
+    </div>
+
+    <!-- Include JavaScript -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        let port;
+        let reader;
+        let writer;
+
+        const outputTextarea = document.getElementById("outputTextarea");
+        const connectBtn = document.getElementById("connectBtn");
+        const sendBtn = document.getElementById("sendBtn");
+
+        connectBtn.addEventListener("click", async () => {
+          try {
+            port = await navigator.serial.requestPort();
+            await port.open({ baudRate: 115200 });
+
+            reader = port.readable.getReader();
+            writer = port.writable.getWriter();
+
+            readLoop();
+          } catch (error) {
+            console.error("Error connecting:", error);
+          }
+        });
+
+        async function readLoop() {
+          try {
+            while (true) {
+              const { value, done } = await reader.read();
+              if (done) {
+                reader.releaseLock();
+                break;
+              }
+              const receivedText = new TextDecoder().decode(value);
+              outputTextarea.value += receivedText;
+            }
+          } catch (error) {
+            console.error("Error reading:", error);
+          }
+        }
+
+        sendBtn.addEventListener("click", async () => {
+          let data = document.getElementById("dataInput").value;
+          data += "\r\n";
+          const encoder = new TextEncoder();
+          if (!port || !port.writable) return;
+          await writer.write(encoder.encode(data));
+        });
+      });
+    </script>
+  </body>
+</html>
