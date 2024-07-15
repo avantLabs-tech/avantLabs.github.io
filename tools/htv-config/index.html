@@ -92,6 +92,13 @@
         >
           Save Configs
         </button>
+        <button
+          id="endDebugBtn"
+          class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
+        >
+          End Debug
+        </button>
+
         <div class="mb-4 flex items-center">
           <label for="apnInput" class="block mb-1 mr-2 w-1/5">APN Name:</label>
           <input
@@ -198,6 +205,8 @@
         const configModeBtn = document.getElementById("configModeBtn");
         const endConfigModeBtn = document.getElementById("endConfigModeBtn");
         const saveConfigsBtn = document.getElementById("saveConfigsBtn");
+        const endDebugBtn = document.getElementById("endDebugBtn");
+
         const apnInput = document.getElementById("apnInput");
         const sendApnBtn = document.getElementById("sendApnBtn");
 
@@ -318,6 +327,11 @@
         saveConfigsBtn.addEventListener("click", () => {
           console.log("Save Configs Button Pressed");
           writeToSerial("SAV:SET");
+        });
+
+        endDebugBtn.addEventListener("click", () => {
+          console.log("Save Configs Button Pressed");
+          writeToSerial("Enddebug");
         });
 
         sendApnBtn.addEventListener("click", () => {
