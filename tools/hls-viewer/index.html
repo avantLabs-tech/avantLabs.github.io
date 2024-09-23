@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Stream</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen">
+
+    <!-- Logo -->
+    <img src="../../wp-content/uploads/2023/01/white.png" alt="Logo" class="w-32 mb-4">
+
+    <!-- Title and Subtitle -->
+    <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold">HLS Viewer</h1>
+        <p class="text-lg text-gray-400">Powered by hls.js</p>
+    </div>
+
+    <!-- Video Section -->
+    <div class="w-full max-w-4xl">
+        <video id="video" controls autoplay width="800" height="450" class="rounded-lg shadow-lg mb-4"></video>
+
+        <!-- Input Field for Video Source -->
+        <div class="mb-6">
+            <label for="videoSrc" class="block mb-2 text-lg font-semibold">Video Source URL:</label>
+            <input type="text" id="videoSrc" class="w-full p-2 bg-gray-800 text-white border border-gray-700 rounded" value="https://stream-akamai.castr.com/5b9352dbda7b8c769937e459/live_2361c920455111ea85db6911fe397b9e/index.fmp4.m3u8" />
+        </div>
+
+        <!-- Load Video Button -->
+        <button id="loadVideo" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded">
+            Load Video
+        </button>
+    </div>
+
+    <script>
+        var video = document.getElementById('video');
+        var videoSrcInput = document.getElementById('videoSrc');
+        var defaultVideoSrc = videoSrcInput.value;
+
+        function loadVideo(src) {
+            if (Hls.isSupported()) {
+                var hls = new Hls();
+                hls.loadSource(src);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    video.play();
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = src;
+                video.addEventListener('loadedmetadata', function() {
+                    video.play();
+                });
+            }
+        }
+
+        document.getElementById('loadVideo').addEventListener('click', function() {
+            var newSrc = videoSrcInput.value;
+            loadVideo(newSrc);
+        });
+
+        // Load default video on page load
+        loadVideo(defaultVideoSrc);
+    </script>
+</body>
+</html>
