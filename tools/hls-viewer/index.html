@@ -14,7 +14,7 @@
 
     <!-- Title and Subtitle -->
     <div class="text-center mb-8">
-        <h1 class="text-4xl font-bold">HLS Viewer<small>v1.0</small></h1>
+        <h1 class="text-4xl font-bold">HLS Viewer<small>v1.1</small></h1>
         <p class="text-lg text-gray-400">Powered by hls.js</p>
     </div>
 
@@ -37,8 +37,8 @@
     <script>
         var video = document.getElementById('video');
         var videoSrcInput = document.getElementById('videoSrc');
-        var defaultVideoSrc = videoSrcInput.value;
-
+        var defaultVideoSrc =  videoSrcInput.value; // Use the path to your HLS playlist
+    
         function loadVideo(src) {
             if (Hls.isSupported()) {
                 var hls = new Hls();
@@ -47,21 +47,40 @@
                 hls.on(Hls.Events.MANIFEST_PARSED, function() {
                     video.play();
                 });
+    
+                // Optionally handle errors
+                hls.on(Hls.Events.ERROR, function(event, data) {
+                    if (data.fatal) {
+                        switch (data.fatal) {
+                            case Hls.ErrorTypes.NETWORK_ERROR:
+                                console.error("Network error");
+                                break;
+                            case Hls.ErrorTypes.MEDIA_ERROR:
+                                console.error("Media error");
+                                break;
+                            case Hls.ErrorTypes.OTHER_ERROR:
+                                console.error("Other error");
+                                break;
+                        }
+                    }
+                });
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                // For Safari
                 video.src = src;
                 video.addEventListener('loadedmetadata', function() {
                     video.play();
                 });
             }
         }
-
+    
         document.getElementById('loadVideo').addEventListener('click', function() {
-            var newSrc = videoSrcInput.value;
+            var newSrc = videoSrcInput.value || defaultVideoSrc; // Fallback to default if input is empty
             loadVideo(newSrc);
         });
-
+    
         // Load default video on page load
         loadVideo(defaultVideoSrc);
     </script>
+    
 </body>
 </html>
