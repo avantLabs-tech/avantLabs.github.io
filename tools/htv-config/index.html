@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HTV TRACKER CONFIG v0.0.7</title>
+    <title>HTV TRACKER CONFIG v0.0.8</title>
     <!-- Include Tailwind CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
@@ -255,7 +255,7 @@
                   const message = buffer.slice(0, buffer.indexOf("\r\n"));
                   console.log("Before replacement:", message);
 
-                  echoToSerial(message);
+                  //echoToSerial(message);
 
                   buffer = buffer.slice(buffer.indexOf("\r\n") + 2);
                 }
