@@ -1,0 +1,51 @@
+#received-card{
+    min-height: 70vh;
+    min-width: 35vw;
+}
+#config-card{
+    min-width: 60vw;
+}
+#pid-label{
+    min-width: 20%;
+}
+
+/* General Styles */
+.led-indicators {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .led-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  
+  /* LED Styles */
+  .led {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
+    border: 2px solid #999; /* Outline for better visibility */
+  }
+  
+  /* Default Off State */
+  .led-off {
+    background-color: #ccc;
+  }
+  
+  /* Glowing Green State */
+  .led-green {
+    background-color: #4caf50;
+    box-shadow: 0 0 10px #4caf50;
+  }
+  
+  /* Glowing Red State */
+  .led-red {
+    background-color: #f44336;
+    box-shadow: 0 0 10px #f44336;
+  }
+  
