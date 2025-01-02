@@ -174,7 +174,7 @@ function parseHeartbeatFlags(byte) {
 
 // Helper to validate checksum
 function computeChecksumXOR(data) {
-  return data.reduce((checksum, byte) => (checksum + byte) & 0xffff, 0);
+  return data.reduce((checksum, byte) => (checksum ^ byte) & 0xffff, 0);
 }
 
 // Helper to parse JSON payload
