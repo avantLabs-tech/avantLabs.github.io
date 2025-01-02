@@ -123,6 +123,7 @@ function processProtocolData(buffer, configCallback, heartbeatCallback) {
         );
         break; // Wait for full JSON + checksum
       }
+      console.log("expected number of bytes received");
 
       const jsonPayload = packet.slice(10, 10 + jsonLength);
       //console.log("Extracted JSON Payload: ", jsonPayload);
@@ -136,6 +137,10 @@ function processProtocolData(buffer, configCallback, heartbeatCallback) {
 
       if (checksum !== computedChecksum) {
         console.log("Invalid checksum for ReadConfig");
+        console.log("Received checksum: " + checksum);
+        console.log("Computed checksum: " + computedChecksum);
+        console.log("Invalid checksum for ReadConfig");
+
         buffer = buffer.slice(startIndex + 10 + jsonLength + 2); // Skip invalid packet
         continue;
       }
