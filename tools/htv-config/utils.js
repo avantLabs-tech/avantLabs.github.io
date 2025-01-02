@@ -31,7 +31,7 @@ async function readLoop(
   outputTextarea,
   configCallback,
   heartbeatCallback,
-  maxMessages = 5
+  maxMessages = 100
 ) {
   let buffer = new Uint8Array(); // Buffer to accumulate incoming data
   let messageCount = 0; // Count of received messages
