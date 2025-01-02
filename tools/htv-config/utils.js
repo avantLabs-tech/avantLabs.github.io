@@ -1,18 +1,29 @@
 async function writeToSerial(port, writer, data) {
-  // Check if port is connected and writable
-  if (!port || !port.writable) {
-    alert("Not Connected to serial Port");
-    return;
-  }
+  try {
+    // Check if port is connected and writable
+    if (!port || !port.writable) {
+      console.error("Serial port is not connected or writable.");
+      return;
+    }
 
-  // Ensure the data is an array of numbers
-  if (!Array.isArray(data) || !data.every((byte) => typeof byte === "number")) {
-    alert("Invalid data format: data should be an array of numbers.");
-    return;
-  }
+    // Ensure the data is an array of numbers
+    if (
+      !Array.isArray(data) ||
+      !data.every((byte) => typeof byte === "number")
+    ) {
+      console.error("Invalid data format: data should be an array of numbers.");
+      return;
+    }
 
-  // Write the data to the serial port
-  await writer.write(new Uint8Array(data)); // Convert the array of numbers to a Uint8Array
+    // Append 0x0A (newline character) to the data
+    const packet = [...data, 0x0a];
+
+    // Write the data to the serial port
+    await writer.write(new Uint8Array(packet)); // Convert to Uint8Array
+    console.log("Data written successfully:", packet);
+  } catch (error) {
+    console.error("Error writing to serial port:", error);
+  }
 }
 
 async function readLoop(
