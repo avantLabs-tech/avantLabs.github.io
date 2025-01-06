@@ -159,29 +159,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   connectBtn.addEventListener("click", async () => {
     try {
-      if (port && port.readable && port.writable) {
-        // Port is already open, so close it
-        await disconnectPort();
-        connectBtn.textContent = "Connect";
-        return;
-      }
+      if (!port) {
+        // Request a new port if none is assigned
+        port = await navigator.serial.requestPort();
+        port.addEventListener("connect", () => {
+          console.log("Port connected.");
+          connectBtn.textContent = "Disconnect";
+        });
 
-      // Request a new port if not connected
-      port = await navigator.serial.requestPort();
-      await openPort();
-
-      connectBtn.textContent = "Disconnect";
-
-      // Optionally, listen to `onconnect` and `ondisconnect` events if supported
-      if ("onconnect" in port) {
-        port.onconnect = () => console.log("Port connected.");
-      }
-      if ("ondisconnect" in port) {
-        port.ondisconnect = async () => {
+        port.addEventListener("disconnect", async () => {
           console.log("Port disconnected.");
           await disconnectPort();
           connectBtn.textContent = "Connect";
-        };
+        });
+      }
+
+      if (port.readable && port.writable) {
+        // Port is open, so close it
+        await disconnectPort();
+      } else {
+        // Open the port
+        await openPort();
       }
     } catch (error) {
       console.error("Error handling port:", error);
@@ -192,17 +190,15 @@ document.addEventListener("DOMContentLoaded", () => {
   async function openPort() {
     try {
       await port.open({ baudRate: 115200 });
-      await port.setSignals({ requestToSend: false }); // Disable RTS first
-      await new Promise((resolve) => setTimeout(resolve, 100)); // Add a slight delay
-      await port.setSignals({ dataTerminalReady: false }); // Disable DTR after RTS
-
       reader = port.readable.getReader();
       writer = port.writable.getWriter();
 
+      // Start the read loop
       readLoop(reader, outputTextarea, populateInputs, populateHeartbeatFlags);
       console.log("Port opened.");
     } catch (error) {
       console.error("Error opening port:", error);
+      throw error; // Propagate error
     }
   }
 
@@ -218,10 +214,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       if (port && port.close) {
         await port.close();
+        port = null;
       }
       console.log("Port closed.");
     } catch (error) {
       console.error("Error disconnecting port:", error);
+      throw error; // Propagate error
     }
   }
 
