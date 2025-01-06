@@ -159,7 +159,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
   connectBtn.addEventListener("click", async () => {
     try {
+      if (port && port.readable && port.writable) {
+        // Port is already open, so close it
+        await disconnectPort();
+        connectBtn.textContent = "Connect";
+        return;
+      }
+
+      // Request a new port if not connected
       port = await navigator.serial.requestPort();
+      await openPort();
+
+      connectBtn.textContent = "Disconnect";
+
+      // Optionally, listen to `onconnect` and `ondisconnect` events if supported
+      if ("onconnect" in port) {
+        port.onconnect = () => console.log("Port connected.");
+      }
+      if ("ondisconnect" in port) {
+        port.ondisconnect = async () => {
+          console.log("Port disconnected.");
+          await disconnectPort();
+          connectBtn.textContent = "Connect";
+        };
+      }
+    } catch (error) {
+      console.error("Error handling port:", error);
+    }
+  });
+
+  // Function to open the port
+  async function openPort() {
+    try {
       await port.open({ baudRate: 115200 });
       await port.setSignals({ requestToSend: false }); // Disable RTS first
       await new Promise((resolve) => setTimeout(resolve, 100)); // Add a slight delay
@@ -169,10 +200,30 @@ document.addEventListener("DOMContentLoaded", () => {
       writer = port.writable.getWriter();
 
       readLoop(reader, outputTextarea, populateInputs, populateHeartbeatFlags);
+      console.log("Port opened.");
     } catch (error) {
-      console.error("Error connecting:", error);
+      console.error("Error opening port:", error);
     }
-  });
+  }
+
+  // Function to close the port
+  async function disconnectPort() {
+    try {
+      if (reader) {
+        await reader.cancel();
+        reader.releaseLock();
+      }
+      if (writer) {
+        writer.releaseLock();
+      }
+      if (port && port.close) {
+        await port.close();
+      }
+      console.log("Port closed.");
+    } catch (error) {
+      console.error("Error disconnecting port:", error);
+    }
+  }
 
   saveBtn.addEventListener("click", () => {
     createAndSendConfigPacket(port, writer, collectInputs());
