@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        if (window.location.protocol === 'http:') {
+            window.location.href = window.location.href.replace('http:', 'https:');
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Stream</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen">
+
+    <!-- Logo -->
+    <img src="../../wp-content/uploads/2023/01/white.png" alt="Logo" class="w-32 mb-4">
+
+    <!-- Title and Subtitle -->
+    <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold">HLS Viewer<small>v1.1</small></h1>
+        <p class="text-lg text-gray-400">Powered by hls.js</p>
+    </div>
+
+    <!-- Video Section -->
+    <div class="w-full max-w-4xl">
+        <video id="video" controls autoplay height="450" class="w-full rounded-lg shadow-lg mb-4"></video>
+
+        <!-- Input Field for Video Source -->
+        <div class="mb-6">
+            <label for="videoSrc" class="block mb-2 text-lg font-semibold">Video Source URL:</label>
+            <input type="text" id="videoSrc" class="w-full p-2 bg-gray-800 text-white border border-gray-700 rounded" value="https://192.168.100.3:8080/d95de9047a22a3708ab9db93c5feb9e3/hls/QRXJX6UBPE/Fb6FSmqgxf/s.m3u8" />
+        </div>
+
+        <!-- Load Video Button -->
+        <button id="loadVideo" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded">
+            Load Video
+        </button>
+    </div>
+
+    <script>
+        var video = document.getElementById('video');
+        var videoSrcInput = document.getElementById('videoSrc');
+        var defaultVideoSrc =  videoSrcInput.value; // Use the path to your HLS playlist
+    
+        function loadVideo(src) {
+            if (Hls.isSupported()) {
+                var hls = new Hls();
+                hls.loadSource(src);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    video.play();
+                });
+    
+                // Optionally handle errors
+                hls.on(Hls.Events.ERROR, function(event, data) {
+                    if (data.fatal) {
+                        switch (data.fatal) {
+                            case Hls.ErrorTypes.NETWORK_ERROR:
+                                console.error("Network error");
+                                break;
+                            case Hls.ErrorTypes.MEDIA_ERROR:
+                                console.error("Media error");
+                                break;
+                            case Hls.ErrorTypes.OTHER_ERROR:
+                                console.error("Other error");
+                                break;
+                        }
+                    }
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                // For Safari
+                video.src = src;
+                video.addEventListener('loadedmetadata', function() {
+                    video.play();
+                });
+            }
+        }
+    
+        document.getElementById('loadVideo').addEventListener('click', function() {
+            var newSrc = videoSrcInput.value || defaultVideoSrc; // Fallback to default if input is empty
+            loadVideo(newSrc);
+        });
+    
+        // Load default video on page load
+        loadVideo(defaultVideoSrc);
+    </script>
+    
+</body>
+</html>
