@@ -14,24 +14,30 @@
 </head>
 <body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen">
 
-    <!-- Logo -->
-    <img src="../../wp-content/uploads/2023/01/white.png" alt="Logo" class="w-32 mb-4">
-
+    <div class="w-full flex items-center justify-between p-4">
+        <!-- Logo on the left corner -->
+        <img src="../../wp-content/uploads/2023/01/white.png" alt="Logo" class="w-32">
+        
+        <!-- Load Video Button on the right corner -->
+        <button id="loadVideo" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Reload Video
+        </button>
+    </div>
+    
+    
+    
     <!-- Fullscreen Video Section -->
     <div class="w-screen h-screen flex items-center justify-center bg-black">
         <div class="w-full h-full max-w-full max-h-full">
             <video id="video" controls autoplay class="w-full h-full object-cover rounded-none"></video>
 
             <!-- Input Field for Video Source -->
-            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-11/12 max-w-xl">
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-11/12 max-w-xl hidden">
                 <label for="videoSrc" class="block mb-2 text-lg font-semibold text-white">Video Source URL:</label>
                 <input type="text" id="videoSrc" class="w-full p-2 bg-gray-800 text-white border border-gray-700 rounded" value="http://192.168.100.36:8080/451f8b45620d234b1c24a42fb8bb241f/hls/QRXJX6UBPE/ZXdTD5ipUT/s.m3u8" />
             </div>
 
-            <!-- Load Video Button -->
-            <button id="loadVideo" class="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" style="display: none;">
-                Reload Video
-            </button>
+            
         </div>
     </div>
 
