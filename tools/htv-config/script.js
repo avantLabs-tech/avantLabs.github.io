@@ -1,4 +1,4 @@
-console.log("HTV Config Script Loaded v2.0.0");
+console.log("HTV Config Script Loaded v3.0.0");
 document.addEventListener("DOMContentLoaded", () => {
   let port;
   let reader;
@@ -194,14 +194,20 @@ document.addEventListener("DOMContentLoaded", () => {
   showBtn.addEventListener("click", async () => {
     if (port && port.readable && port.writable) {
       // Port is already open, so close it
-      await writer.write("SHOW"); // Convert to Uint8Array
+      const text = "SHOW\r\n";
+      const encoder = new TextEncoder();
+      const data = encoder.encode(text);
+      await writer.write(data); // Convert to Uint8Array
       return;
     }
   });
   hideBtn.addEventListener("click", async () => {
     if (port && port.readable && port.writable) {
       // Port is already open, so close it
-      await writer.write("HIDE"); // Convert to Uint8Array
+      const text = "HIDE\r\n";
+      const encoder = new TextEncoder();
+      const data = encoder.encode(text);
+      await writer.write(data); // Convert to Uint8Array
       return;
     }
   });
