@@ -9,11 +9,8 @@
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/inputmask@5.0.7/dist/inputmask.min.js"></script>
-
-
-
   </head>
 
   <body class="bg-gray-100 p-4">
@@ -42,7 +39,10 @@
 
     <div class="flex justify-between gap-4">
       <!-- Set Configs Card -->
-      <div id="config-card" class="flex flex-col bg-white rounded p-6 shadow-md justify-between">
+      <div
+        id="config-card"
+        class="flex flex-col bg-white rounded p-6 shadow-md justify-between"
+      >
         <div class="flex justify-between items-center w-full">
           <h2 class="text-xl font-bold mb-4">Set Configs</h2>
           <div>
@@ -52,14 +52,12 @@
             >
               SHOW
             </button>
-            <div>
             <button
               id="hideBtn"
               class="mb-4 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
               HIDE
             </button>
-          
             <a
               href="https://inhealion.gr/storage-dev/firmware-test/"
               target="_blank"
@@ -68,17 +66,15 @@
               Programmer
             </a>
 
-
             <button
               id="connectBtn"
               class="mb-4 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
               Connect
             </button>
+          </div>
         </div>
-          
-        </div>
-    
+
         <div class="mb-4 flex items-center">
           <label for="ImeiInput" class="block mb-1 mr-2 w-1/5">IMEI:</label>
           <input
@@ -88,7 +84,7 @@
             readonly
           />
         </div>
-    
+
         <div class="mb-4 flex items-center">
           <label for="apnInput" class="block mb-1 mr-2 w-1/5">APN Name:</label>
           <input
@@ -97,7 +93,7 @@
             class="flex-grow border border-gray-300 rounded px-3 py-2"
           />
         </div>
-    
+
         <div class="mb-4 flex items-center">
           <label for="ipInput" class="block mb-1 mr-2 w-1/5">IP Address:</label>
           <input
@@ -106,7 +102,7 @@
             class="flex-grow border border-gray-300 rounded px-3 py-2"
           />
         </div>
-    
+
         <div class="mb-4 flex items-center">
           <label for="portInput" class="block mb-1 mr-2 w-1/5">Port:</label>
           <input
@@ -115,18 +111,22 @@
             class="flex-grow border border-gray-300 rounded px-3 py-2"
           />
         </div>
-    
+
         <div class="mb-4 flex items-center">
-          <label for="updateRateInput" class="block mb-1 mr-2 w-1/5">Update Rate:</label>
+          <label for="updateRateInput" class="block mb-1 mr-2 w-1/5"
+            >Update Rate:</label
+          >
           <input
             type="number"
             id="updateRateInput"
             class="flex-grow border border-gray-300 rounded px-3 py-2"
           />
         </div>
-    
+
         <div class="mb-4 flex items-center">
-          <label for="canTypeInput" class="block mb-1 mr-2 w-1/5">CAN Type:</label>
+          <label for="canTypeInput" class="block mb-1 mr-2 w-1/5"
+            >CAN Type:</label
+          >
           <select
             id="canTypeInput"
             class="flex-grow border border-gray-300 rounded px-3 py-2"
@@ -135,9 +135,11 @@
             <option value="EXTID">Extended</option>
           </select>
         </div>
-    
+
         <div class="mb-4 flex items-center">
-          <label for="pidsInput" id="pid-label" class="block mb-1 mr-2 w-1/5">PIDs:</label>
+          <label for="pidsInput" id="pid-label" class="block mb-1 mr-2 w-1/5"
+            >PIDs:</label
+          >
           <div class="flex-grow border border-gray-300 rounded px-3 py-2">
             <input
               type="text"
@@ -201,7 +203,7 @@
             />
           </div>
         </div>
-    
+
         <div class="flex justify-end gap-4 mt-4">
           <button
             id="saveConfigsBtn"
@@ -223,9 +225,12 @@
           </button>
         </div>
       </div>
-    
+
       <!-- Received Data Card -->
-      <div id="received-card" class="bg-white rounded p-6 shadow-md flex flex-col">
+      <div
+        id="received-card"
+        class="bg-white rounded p-6 shadow-md flex flex-col"
+      >
         <h2 class="text-xl font-bold mb-4">Received Data</h2>
         <div class="mt-4 flex-grow">
           <textarea
@@ -236,8 +241,6 @@
         </div>
       </div>
     </div>
-    
-    
 
     <!-- Include JavaScript -->
     <script src="utils.js"></script>

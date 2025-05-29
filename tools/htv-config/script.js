@@ -1,3 +1,4 @@
+console.log("HTV Config Script Loaded v2.0.0");
 document.addEventListener("DOMContentLoaded", () => {
   let port;
   let reader;
