@@ -55,6 +55,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const gpsIndicator = document.getElementById("gps-indicator");
 
   const connectBtn = document.getElementById("connectBtn");
+  const showBtn = document.getElementById("showBtn");
+  const hideBtn = document.getElementById("hideBtn");
   const defaultBtn = document.getElementById("defaultConfigsBtn");
   const readBtn = document.getElementById("readConfigsBtn");
   const saveBtn = document.getElementById("saveConfigsBtn");
@@ -185,6 +187,21 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } catch (error) {
       console.error("Error handling port:", error);
+    }
+  });
+
+  showBtn.addEventListener("click", async () => {
+    if (port && port.readable && port.writable) {
+      // Port is already open, so close it
+      await writer.write("SHOW"); // Convert to Uint8Array
+      return;
+    }
+  });
+  hideBtn.addEventListener("click", async () => {
+    if (port && port.readable && port.writable) {
+      // Port is already open, so close it
+      await writer.write("HIDE"); // Convert to Uint8Array
+      return;
     }
   });
 
