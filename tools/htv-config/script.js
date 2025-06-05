@@ -1,4 +1,4 @@
-console.log("HTV Config Script Loaded v3.0.0");
+console.log("HTV Config Script Loaded v4.0.0");
 document.addEventListener("DOMContentLoaded", () => {
   let port;
   let reader;
@@ -58,6 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const connectBtn = document.getElementById("connectBtn");
   const showBtn = document.getElementById("showBtn");
   const hideBtn = document.getElementById("hideBtn");
+  const showCanBtn = document.getElementById("showCanBtn");
+  const hideCanBtn = document.getElementById("hideCanBtn");
   const defaultBtn = document.getElementById("defaultConfigsBtn");
   const readBtn = document.getElementById("readConfigsBtn");
   const saveBtn = document.getElementById("saveConfigsBtn");
@@ -205,6 +207,27 @@ document.addEventListener("DOMContentLoaded", () => {
     if (port && port.readable && port.writable) {
       // Port is already open, so close it
       const text = "HIDE\r\n";
+      const encoder = new TextEncoder();
+      const data = encoder.encode(text);
+      await writer.write(data); // Convert to Uint8Array
+      return;
+    }
+  });
+
+  showCanBtn.addEventListener("click", async () => {
+    if (port && port.readable && port.writable) {
+      // Port is already open, so close it
+      const text = "CANS\r\n";
+      const encoder = new TextEncoder();
+      const data = encoder.encode(text);
+      await writer.write(data); // Convert to Uint8Array
+      return;
+    }
+  });
+  hideCanBtn.addEventListener("click", async () => {
+    if (port && port.readable && port.writable) {
+      // Port is already open, so close it
+      const text = "CANH\r\n";
       const encoder = new TextEncoder();
       const data = encoder.encode(text);
       await writer.write(data); // Convert to Uint8Array
