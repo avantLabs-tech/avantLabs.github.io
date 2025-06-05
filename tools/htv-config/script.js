@@ -75,12 +75,13 @@ document.addEventListener("DOMContentLoaded", () => {
   new Inputmask(maskOptions).mask(pid9);
   new Inputmask(maskOptions).mask(pid10);
 
-  function populateHeartbeatFlags(flags) {
+  function populateHeartbeatFlags(flags, signalStrength) {
     console.log("heartbeat recevied");
     updateLedState(simIndicator, flags.simInserted);
     updateLedState(gprsIndicator, flags.gprsConnected);
     updateLedState(serverIndicator, flags.serverConnected);
     updateLedState(gpsIndicator, flags.gpsReady);
+    updateSignalStrength(signalStrength);
   }
   function updateLedState(ledElement, isActive) {
     if (isActive) {
@@ -192,7 +193,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Error handling port:", error);
     }
   });
-
   showBtn.addEventListener("click", async () => {
     if (port && port.readable && port.writable) {
       // Port is already open, so close it
@@ -269,6 +269,45 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("Port closed.");
     } catch (error) {
       console.error("Error disconnecting port:", error);
+    }
+  }
+
+  function updateSignalStrength(signalValue) {
+    const indicator = document.querySelector(".signal-indicator");
+    const bars = indicator.querySelectorAll(".signal-bars .bar");
+
+    // Reset all bar classes
+    bars.forEach((bar) => {
+      bar.classList.remove("active", "inactive");
+      bar.classList.add("inactive");
+    });
+
+    // Handle unknown signal
+    if (signalValue === 99) {
+      indicator.classList.add("unknown");
+      return;
+    } else {
+      indicator.classList.remove("unknown");
+    }
+
+    let activeBars = 0;
+
+    if (signalValue === 0) {
+      activeBars = 0;
+    } else if (signalValue <= 5) {
+      activeBars = 1;
+    } else if (signalValue <= 12) {
+      activeBars = 2;
+    } else if (signalValue <= 19) {
+      activeBars = 3;
+    } else if (signalValue <= 31) {
+      activeBars = 4;
+    }
+
+    // Light up appropriate number of bars
+    for (let i = 0; i < activeBars; i++) {
+      bars[i].classList.remove("inactive");
+      bars[i].classList.add("active");
     }
   }
 

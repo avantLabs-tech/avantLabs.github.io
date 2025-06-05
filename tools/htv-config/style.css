@@ -48,4 +48,50 @@
     background-color: #f44336;
     box-shadow: 0 0 10px #f44336;
   }
+
+
+  .signal-indicator {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.signal-bars {
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+  height: 20px;
+}
+
+.signal-bars .bar {
+  width: 4px;
+  background-color: #ccc;
+  transition: background-color 0.3s;
+}
+
+.signal-bars .bar-1 { height: 5px; }
+.signal-bars .bar-2 { height: 10px; }
+.signal-bars .bar-3 { height: 15px; }
+.signal-bars .bar-4 { height: 20px; }
+
+.signal-bars .active {
+  background-color: green;
+}
+
+.signal-unknown {
+  font-size: 18px;
+  color: #888;
+  display: none;
+}
+
+/* Show the question mark and hide bars when signal is unknown */
+.signal-indicator.unknown .signal-bars {
+  display: none;
+}
+
+.signal-indicator.unknown .signal-unknown {
+  display: block;
+}
+
   

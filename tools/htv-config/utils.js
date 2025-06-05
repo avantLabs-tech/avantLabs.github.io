@@ -100,7 +100,8 @@ function processProtocolData(buffer, configCallback, heartbeatCallback) {
     if (modeByte === 0xc1) {
       // Heartbeat
       const flags = parseHeartbeatFlags(packet[6]);
-      heartbeatCallback(flags);
+      const signalStregnth = packet[7];
+      heartbeatCallback(flags, signalStregnth);
       //console.log("Heartbeat received:", flags);
       buffer = buffer.slice(startIndex + 10); // Move to next packet
     } else if (modeByte === 0xc2) {
