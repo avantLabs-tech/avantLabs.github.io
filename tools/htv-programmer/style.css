@@ -1,0 +1,51 @@
+.selected {
+    background-color: rgba(210,210,210);
+}
+
+.selectable:hover {
+    cursor: pointer;
+}
+
+.tiny-text {
+    font-size: 0.7rem;
+}
+
+
+button {
+  all: unset;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: none;
+}
+.icon-button {
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.icon-button:hover {
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    transform: scale(1.1);
+}
+
+.icon-button:focus {
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.text-icon {
+    font-size: 60vw; /* Default font size for mobile screens */
+
+    /* Media query for computer screens with a min-width of 768px */
+    @media (min-width: 768px) {
+        font-size: 15vw; /* Font size for computer screens */
+    }
+}

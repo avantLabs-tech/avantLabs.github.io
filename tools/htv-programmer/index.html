@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+      .Available {
+        background-color: rgba(128, 255, 128, 0.2);
+        color: rgb(64, 128, 92);
+      }
+
+      .Missing {
+        background-color: rgba(255, 128, 128, 0.2);
+        color: rgb(255, 128, 128);
+      }
+
+      thead {
+        /* Make table head sticky */
+        position: sticky;
+        top: 0;
+        background-color: #f7f7f7;
+        /* Background color for the head */
+        z-index: 1;
+        /* Ensure it stays above the body */
+      }
+
+      tbody {
+        /* Adjust overflow behavior to allow scrolling */
+        max-height: calc(60vh - 75px);
+        /* Adjust according to your thead height */
+        overflow-y: auto;
+        width: 100%;
+      }
+
+      tbody tr {
+        width: 100%;
+        table-layout: auto;
+      }
+
+      tbody td {
+        /* Ensure the table cell widths match the head */
+        width: calc(100% / (3));
+        /* Adjust according to your number of columns */
+        text-align: center;
+      }
+
+      #fileList {
+        width: 100%;
+        max-height: 60vh;
+        height: 50vh;
+        overflow: hidden;
+      }
+    </style>
+    <link rel="stylesheet" href="./admin-css.css" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <div id="wrapper">
+      <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+          <nav
+            class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+          >
+            <!-- Topbar Search -->
+            <div class="mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+              <h1
+                id="heading-main"
+                class="h3 mb-2 text-gray-800"
+                style="margin-top: 10px"
+              >
+                HTV Tracker Flash Utility
+              </h1>
+            </div>
+
+            <!-- Topbar Navbar -->
+            <ul class="navbar-nav ml-auto">
+              <div class="topbar-divider d-none d-sm-block"></div>
+
+              <!-- Nav Item - User Information -->
+              <li class="nav-item dropdown no-arrow">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="userDropdown"
+                  role="button"
+                  style="color: #222"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <span class="mr-2 d-none d-lg-inline small">
+                    <?php echo $_SESSION['il_name'] ?>
+                  </span>
+                </a>
+                <!-- Dropdown - User Information -->
+                <div
+                  class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                  aria-labelledby="userDropdown"
+                ></div>
+              </li>
+            </ul>
+          </nav>
+          <div class="container-fluid">
+            <div
+              id="errBanner"
+              class="alert alert-danger"
+              style="display: none; position: relative"
+            >
+              <span id="errBannerText"></span>
+              <button class="close" type="button">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div
+              id="successBanner"
+              class="alert alert-success"
+              style="display: none; position: relative"
+            >
+              <span id="successBannerText"></span>
+              <button class="close hide-banner-btn" type="button">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div>
+              <div class="card shadow mt-4">
+                <div
+                  class="card-header py-3 d-flex justify-content-between align-items-center"
+                >
+                  <div class="d-flex align-items-center">
+                    <h4 class="m-0 font-weight-bold">Device:</h4>
+                    &nbsp;
+                    <div id="deviceInfo" style="display: none">
+                      <div class="d-flex align-items-center">
+                        <h5 id="boardType" class="m-0"></h5>
+                        <h5 class="m-0">&nbsp;firmware v</h5>
+                        <h5 class="m-0" id="majorVersion"></h5>
+                        .
+                        <h5 class="m-0" id="minorVersion"></h5>
+                        .
+                        <h5 class="m-0" id="patchVersion"></h5>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="d-flex">
+                    <button class="btn btn-primary" id="selectFileBtn">
+                      Select Binary File
+                    </button>
+                    <button
+                      id="openSerialPortBtn"
+                      class="btn btn-primary mx-1 rounded"
+                    >
+                      Connect to Device
+                    </button>
+                  </div>
+                </div>
+                <div style="border: 1px black">
+                  <textarea
+                    id="dataBox"
+                    style="width: 400px; height: 600px; resize: none"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./script.js"></script>
+  </body>
+
+  <div
+    class="modal fade"
+    id="fileUploadModal"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="customerModalLabel">Updating Files</h5>
+        </div>
+        <div class="modal-body">
+          <p id="fileWritingLabel"></p>
+          <progress
+            id="progressBarPrograms"
+            value="0"
+            max="100"
+            class="w-100"
+          ></progress>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="iapFlashModal"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="flashModalLabel">Updating Firmware</h5>
+        </div>
+        <div class="modal-body">
+          <p id="iapFlashCountLabel"></p>
+          <progress
+            id="progressBarFirmware"
+            value="0"
+            max="100"
+            class="w-100"
+          ></progress>
+        </div>
+      </div>
+    </div>
+  </div>
+</html>
